@@ -1,6 +1,8 @@
 # godot-appodeal-android-plugin
 Appodeal Android SDK for Godot
 
+API Compatible with [Godot Appodeal iOS module](https://github.com/PoqXert/godot-appodeal-ios-module) (exclude Android-only methods).
+
 ## Setup
 
 If not already done, make sure you have enabled and successfully set up Android Custom Builds. Grab the``GodotAppodeal`` plugin binary and config from the releases page and put both into res://android/plugins. The plugin should now show up in the Android export settings, where you can enable it.
@@ -158,7 +160,7 @@ func disableNetwork(network: String) -> void
 func disableNetworkForAdType(network: String, ad_type: int) -> void
 ```
 ```gdscript
-# Request Android M permissions
+# Request Android M permissions (Android-only)
 func requestAndroidMPermissions() -> void
 ```
 ```gdscript
@@ -175,7 +177,7 @@ func setChildDirectedTreatment(for_kids: bool) -> void
 func updateConsent(consent: bool) -> void
 ```
 ```gdscript
-# Disable write external storage permission check
+# Disable write external storage permission check (Android-only)
 func disableWriteExternalStoragePermissionCheck() -> void
 ```
 ```gdscript
@@ -183,7 +185,7 @@ func disableWriteExternalStoragePermissionCheck() -> void
 func setLogLevel(log_level: int) -> void
 ```
 ```gdscript
-# Mute videos if call volume is muted
+# Mute videos if call volume is muted (Android-only)
 func muteVideosIfCallsMuted(mute: bool) -> void
 ```
 ```gdscript
