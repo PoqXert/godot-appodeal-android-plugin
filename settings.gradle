@@ -1,0 +1,2 @@
+include ':godotappodeal'
+rootProject.name = "Godot Appodeal Plugin"
