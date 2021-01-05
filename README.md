@@ -1,7 +1,7 @@
 # godot-appodeal-android-plugin
 Appodeal Android SDK for Godot
 
-API Compatible with [Godot Appodeal iOS module](https://github.com/PoqXert/godot-appodeal-ios-module) (exclude Android-only methods).
+API Compatible with [Godot Appodeal iOS module](https://github.com/PoqXert/godot-appodeal-ios-module) (exclude [platform specific](#android-only)).
 
 ## Setup
 
@@ -158,10 +158,6 @@ func disableNetwork(network: String) -> void
 ```gdscript
 # Disable specified network for ad type
 func disableNetworkForAdType(network: String, ad_type: int) -> void
-```
-```gdscript
-# Request Android M permissions (Android-only)
-func requestAndroidMPermissions() -> void
 ```
 ```gdscript
 # Disable location tracking (use before initialization).
@@ -384,4 +380,11 @@ signal non_skippable_video_closed(finished: bool)
 ```gdscript
 # Emit when non-skippable video is expired
 signal non_skippable_video_expired()
+```
+## Android-only
+This methods available on Android only.
+### Methods
+```gdscript
+# Request Android M permissions
+func requestAndroidMPermissions() -> void
 ```
