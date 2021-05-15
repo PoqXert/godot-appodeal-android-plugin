@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 ext.pluginVersionCode = 1
-ext.pluginVersionName = "1.0.0"
+ext.pluginVersionName = "1.0.1"
 
 android {
     compileSdkVersion 30
@@ -26,7 +26,7 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.appodeal.ads:sdk:2.6.5.+'
+    implementation 'com.appodeal.ads:sdk:2.7.4.+'
     implementation 'androidx.multidex:multidex:2.0.1'
     compileOnly fileTree(dir: 'libs', includes: ['godot-lib*.aar'])
 }

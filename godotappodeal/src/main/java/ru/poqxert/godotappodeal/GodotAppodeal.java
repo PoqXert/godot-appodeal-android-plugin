@@ -19,6 +19,7 @@ import org.godotengine.godot.Dictionary;
 import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.SignalInfo;
+import org.godotengine.godot.plugin.UsedByGodot;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +39,7 @@ public class GodotAppodeal extends GodotPlugin {
 
     public GodotAppodeal(Godot godot) {
         super(godot);
-        activity = godot;
+        activity = getActivity();
     }
 
     @Nullable
@@ -52,47 +53,6 @@ public class GodotAppodeal extends GodotPlugin {
     @Override
     public String getPluginName() {
         return "GodotAppodeal";
-    }
-
-    @NonNull
-    @Override
-    public List<String> getPluginMethods() {
-        return Arrays.asList(
-                "setTestingEnabled",
-                "disableNetworks",
-                "disableNetworksForAdType",
-                "disableNetwork",
-                "disableNetworkForAdType",
-                "getPredictedEcpmForAdType",
-                "requestAndroidMPermissions",
-                "setLocationTracking",
-                "setAutocache",
-                "isAutocacheEnabled",
-                "initialize",
-                "isInitializedForAdType",
-                "setLogLevel",
-                "setExtras",
-                "setChildDirectedTreatment",
-                "updateConsent",
-                "setUserId",
-                "setUserAge",
-                "setUserGender",
-                "canShow",
-                "canShowForPlacement",
-                "showAd",
-                "showAdForPlacement",
-                "cacheAd",
-                "isPrecacheAd",
-                "setSegmentFilter",
-                "setPreferredBannerAdSize",
-                "hideBanner",
-                "setSmartBannersEnabled",
-                "setBannerAnimationEnabled",
-                "getRewardForPlacement",
-                "trackInAppPurchase",
-                "disableWriteExternalStoragePermissionCheck",
-                "muteVideosIfCallsMuted"
-                );
     }
 
     @NonNull
@@ -171,65 +131,7 @@ public class GodotAppodeal extends GodotPlugin {
         return res;
     }
 
-    public void setTestingEnabled(boolean testing) {
-        Appodeal.setTesting(testing);
-    }
-
-    public void disableNetworks(String[] networks) {
-        int len = networks.length;
-        for(int i = 0; i < len; i++) {
-            disableNetwork(networks[i]);
-        }
-    }
-
-    public void disableNetworksForAdType(String[] networks, int adType) {
-        int len = networks.length;
-        for(int i = 0; i < len; i++) {
-            disableNetworkForAdType(networks[i], adType);
-        }
-    }
-
-    public void disableNetwork(String network) {
-        Appodeal.disableNetwork(activity, network);
-    }
-
-    public void disableNetworkForAdType(String network, int adType) {
-        Appodeal.disableNetwork(activity, network, getAdType(adType));
-    }
-
-    public double getPredictedEcpmForAdType(int adType) {
-        return Appodeal.getPredictedEcpm(getAdType(adType));
-    }
-
-    public void requestAndroidMPermissions() {
-        Appodeal.requestAndroidMPermissions(activity, new PermissionsHelper.AppodealPermissionCallbacks() {
-            @Override
-            public void writeExternalStorageResponse(int i) {
-            }
-
-            @Override
-            public void accessCoarseLocationResponse(int i) {
-
-            }
-        });
-    }
-
-    public void setLocationTracking(boolean enabled) {
-        if(!enabled) {
-            Appodeal.disableLocationPermissionCheck();
-        }
-    }
-
-    public void setAutocache(boolean enabled, int adType) {
-        Appodeal.setAutoCache(getAdType(adType), enabled);
-    }
-
-    public boolean isAutocacheEnabled(int adType) {
-        return Appodeal.isAutoCacheEnabled(getAdType(adType));
-    }
-
-    public void initialize(String appId, int adTypes, boolean consent) {
-        int types = getAdType(adTypes);
+    private void setCallbacks(int types) {
         if((types&Appodeal.INTERSTITIAL) != 0) {
             Appodeal.setInterstitialCallbacks(new InterstitialCallbacks() {
                 @Override
@@ -382,17 +284,93 @@ public class GodotAppodeal extends GodotPlugin {
                 }
             });
         }
+    }
+
+    @UsedByGodot
+    public void setTestingEnabled(boolean testing) {
+        Appodeal.setTesting(testing);
+    }
+
+    @UsedByGodot
+    public void disableNetworks(String[] networks) {
+        int len = networks.length;
+        for(int i = 0; i < len; i++) {
+            disableNetwork(networks[i]);
+        }
+    }
+
+    @UsedByGodot
+    public void disableNetworksForAdType(String[] networks, int adType) {
+        int len = networks.length;
+        for(int i = 0; i < len; i++) {
+            disableNetworkForAdType(networks[i], adType);
+        }
+    }
+
+    @UsedByGodot
+    public void disableNetwork(String network) {
+        Appodeal.disableNetwork(activity, network);
+    }
+
+    @UsedByGodot
+    public void disableNetworkForAdType(String network, int adType) {
+        Appodeal.disableNetwork(activity, network, getAdType(adType));
+    }
+
+    @UsedByGodot
+    public double getPredictedEcpmForAdType(int adType) {
+        return Appodeal.getPredictedEcpm(getAdType(adType));
+    }
+
+    @UsedByGodot
+    public void requestAndroidMPermissions() {
+        Appodeal.requestAndroidMPermissions(activity, new PermissionsHelper.AppodealPermissionCallbacks() {
+            @Override
+            public void writeExternalStorageResponse(int i) {
+            }
+
+            @Override
+            public void accessCoarseLocationResponse(int i) {
+
+            }
+        });
+    }
+
+    @UsedByGodot
+    public void setLocationTracking(boolean enabled) {
+        if(!enabled) {
+            Appodeal.disableLocationPermissionCheck();
+        }
+    }
+
+    @UsedByGodot
+    public void setAutocache(boolean enabled, int adType) {
+        Appodeal.setAutoCache(getAdType(adType), enabled);
+    }
+
+    @UsedByGodot
+    public boolean isAutocacheEnabled(int adType) {
+        return Appodeal.isAutoCacheEnabled(getAdType(adType));
+    }
+
+    @UsedByGodot
+    public void initialize(String appId, int adTypes, boolean consent) {
+        int types = getAdType(adTypes);
+        setCallbacks(types);
         Appodeal.initialize(activity, appId, types, consent);
     }
 
+    @UsedByGodot
     public boolean isInitializedForAdType(int adType) {
         return Appodeal.isInitialized(getAdType(adType));
     }
 
+    @UsedByGodot
     public void setLogLevel(int level) {
         Appodeal.setLogLevel(Log.LogLevel.fromInteger(level));
     }
 
+    @UsedByGodot
     public void setExtras(Dictionary extras) {
         String[] keys = extras.get_keys();
         int len = keys.length;
@@ -411,22 +389,27 @@ public class GodotAppodeal extends GodotPlugin {
         }
     }
 
+    @UsedByGodot
     public void setChildDirectedTreatment(boolean value) {
         Appodeal.setChildDirectedTreatment(value);
     }
 
+    @UsedByGodot
     public void updateConsent(boolean consent) {
         Appodeal.updateConsent(consent);
     }
 
+    @UsedByGodot
     public void setUserId(String userId) {
         Appodeal.setUserId(userId);
     }
 
+    @UsedByGodot
     public void setUserAge(int age) {
         Appodeal.setUserAge(age);
     }
 
+    @UsedByGodot
     public void setUserGender(int gender) {
         UserSettings.Gender g = UserSettings.Gender.fromInteger(gender);
         if(g != null) {
@@ -434,14 +417,17 @@ public class GodotAppodeal extends GodotPlugin {
         }
     }
 
+    @UsedByGodot
     public boolean canShow(int style) {
         return Appodeal.canShow(getShowStyle(style));
     }
 
+    @UsedByGodot
     public boolean canShowForPlacement(int adType, String placementName) {
         return Appodeal.canShow(adType, placementName);
     }
 
+    @UsedByGodot
     public boolean showAd(int style) {
         boolean can = canShow(style);
         activity.runOnUiThread(new Runnable() {
@@ -453,6 +439,7 @@ public class GodotAppodeal extends GodotPlugin {
         return can;
     }
 
+    @UsedByGodot
     public boolean showAdForPlacement(int style, String placementName) {
         boolean can = canShowForPlacement(getShowStyle(style), placementName);
         activity.runOnUiThread(new Runnable() {
@@ -464,14 +451,17 @@ public class GodotAppodeal extends GodotPlugin {
         return can;
     }
 
+    @UsedByGodot
     public void cacheAd(int adType) {
         Appodeal.cache(activity, getAdType(adType));
     }
 
+    @UsedByGodot
     public boolean isPrecacheAd(int adType) {
         return Appodeal.isPrecache(getAdType(adType));
     }
 
+    @UsedByGodot
     public void setSegmentFilter(Dictionary filter) {
         String[] keys = filter.get_keys();
         int len = keys.length;
@@ -479,31 +469,36 @@ public class GodotAppodeal extends GodotPlugin {
             String key = keys[i];
             Object val = filter.get(key);
             if(val instanceof Integer) {
-                Appodeal.setSegmentFilter(key, (int)val);
+                Appodeal.setCustomFilter(key, (int)val);
             } else if(val instanceof Double) {
-                Appodeal.setSegmentFilter(key, (double)val);
+                Appodeal.setCustomFilter(key, (double)val);
             } else if(val instanceof Boolean) {
-                Appodeal.setSegmentFilter(key, (boolean)val);
+                Appodeal.setCustomFilter(key, (boolean)val);
             } else if(val instanceof String) {
-                Appodeal.setSegmentFilter(key, (String)val);
+                Appodeal.setCustomFilter(key, (String)val);
             }
         }
     }
 
+    @UsedByGodot
     public void setPreferredBannerAdSize(int size) {
         Appodeal.set728x90Banners(size == 1);
     }
 
+    @UsedByGodot
     public void hideBanner() {
         Appodeal.hide(activity, Appodeal.BANNER);
     }
 
+    @UsedByGodot
     public void setSmartBannersEnabled(boolean enabled) {
         Appodeal.setSmartBanners(enabled);
     }
 
+    @UsedByGodot
     public void setBannerAnimationEnabled(boolean enabled) {Appodeal.setBannerAnimation(enabled);}
 
+    @UsedByGodot
     public Dictionary getRewardForPlacement(String placement) {
         Pair<Double, String> reward = Appodeal.getRewardParameters(placement);
         Dictionary res = new Dictionary();
@@ -512,14 +507,17 @@ public class GodotAppodeal extends GodotPlugin {
         return res;
     }
 
+    @UsedByGodot
     public void disableWriteExternalStoragePermissionCheck() {
         Appodeal.disableWriteExternalStoragePermissionCheck();
     }
 
+    @UsedByGodot
     public void muteVideosIfCallsMuted(boolean mute) {
         Appodeal.muteVideosIfCallsMuted(mute);
     }
 
+    @UsedByGodot
     public void trackInAppPurchase(double amount, String currencyCode) {
         Appodeal.trackInAppPurchase(activity.getApplicationContext(), amount, currencyCode);
     }
