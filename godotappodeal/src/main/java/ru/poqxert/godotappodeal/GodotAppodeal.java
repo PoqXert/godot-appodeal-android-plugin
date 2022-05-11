@@ -11,9 +11,7 @@ import com.appodeal.ads.InterstitialCallbacks;
 import com.appodeal.ads.NonSkippableVideoCallbacks;
 import com.appodeal.ads.RewardedVideoCallbacks;
 import com.appodeal.ads.UserSettings;
-import com.appodeal.ads.api.App;
 import com.appodeal.ads.utils.Log;
-import com.appodeal.ads.utils.PermissionsHelper;
 
 import org.godotengine.godot.Dictionary;
 import org.godotengine.godot.Godot;
@@ -24,12 +22,7 @@ import org.godotengine.godot.plugin.UsedByGodot;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.security.Permissions;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class GodotAppodeal extends GodotPlugin {
@@ -87,6 +80,7 @@ public class GodotAppodeal extends GodotPlugin {
         signalInfoSet.add(new SignalInfo("non_skippable_video_load_failed"));
         signalInfoSet.add(new SignalInfo("non_skippable_video_shown"));
         signalInfoSet.add(new SignalInfo("non_skippable_video_show_failed"));
+        signalInfoSet.add(new SignalInfo("non_skippable_video_finished"));
         signalInfoSet.add(new SignalInfo("non_skippable_video_clicked"));
         signalInfoSet.add(new SignalInfo("non_skippable_video_closed", Boolean.class));
         signalInfoSet.add(new SignalInfo("non_skippable_video_expired"));
@@ -323,27 +317,6 @@ public class GodotAppodeal extends GodotPlugin {
     }
 
     @UsedByGodot
-    public void requestAndroidMPermissions() {
-        Appodeal.requestAndroidMPermissions(activity, new PermissionsHelper.AppodealPermissionCallbacks() {
-            @Override
-            public void writeExternalStorageResponse(int i) {
-            }
-
-            @Override
-            public void accessCoarseLocationResponse(int i) {
-
-            }
-        });
-    }
-
-    @UsedByGodot
-    public void setLocationTracking(boolean enabled) {
-        if(!enabled) {
-            Appodeal.disableLocationPermissionCheck();
-        }
-    }
-
-    @UsedByGodot
     public void setAutocache(boolean enabled, int adType) {
         Appodeal.setAutoCache(getAdType(adType), enabled);
     }
@@ -505,11 +478,6 @@ public class GodotAppodeal extends GodotPlugin {
         res.put("currency", reward.second);
         res.put("amount", reward.first);
         return res;
-    }
-
-    @UsedByGodot
-    public void disableWriteExternalStoragePermissionCheck() {
-        Appodeal.disableWriteExternalStoragePermissionCheck();
     }
 
     @UsedByGodot
